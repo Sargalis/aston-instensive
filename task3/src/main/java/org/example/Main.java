@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.List;
 
 public class Main {
-	private static final UserDAO dao = new UserDAO();
+	private static final UserService userService = new UserService(new UserDAO());
 	private static final Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
@@ -46,7 +46,7 @@ public class Main {
 		Integer age = ageStr.isEmpty() ? null : Integer.parseInt(ageStr);
 
 		try {
-			User user = dao.create(new User(name, email, age));
+			User user = userService.createUser(name, email, age);
 			System.out.println("Создан! ID: " + user.getId());
 		} catch (Exception e) {
 			System.out.println("Ошибка: " + e.getMessage());
@@ -56,7 +56,7 @@ public class Main {
 	private static void read() {
 		System.out.print("ID: ");
 		Long id = Long.parseLong(scanner.nextLine());
-		User user = dao.read(id);
+		User user = userService.getUserById(id);
 		if (user != null) {
 			System.out.println(user);
 		} else {
@@ -65,7 +65,7 @@ public class Main {
 	}
 
 	private static void readAll() {
-		List<User> users = dao.readAll();
+		List<User> users = userService.getAllUsers();
 		if (users.isEmpty()) {
 			System.out.println("Нет пользователей");
 		} else {
@@ -76,8 +76,7 @@ public class Main {
 	private static void update() {
 		System.out.print("ID для обновления: ");
 		Long id = Long.parseLong(scanner.nextLine());
-
-		User user = dao.read(id);
+		User user = userService.getUserById(id);
 		if (user == null) {
 			System.out.println("Пользователь не найден");
 			return;
@@ -95,8 +94,13 @@ public class Main {
 		String ageStr = scanner.nextLine();
 		if (!ageStr.isEmpty()) user.setAge(Integer.parseInt(ageStr));
 
-		dao.update(user);
-		System.out.println("Обновлено!");
+		try {
+			User updated = userService.updateUser(id, user.getName(), user.getEmail(), user.getAge());
+			System.out.println("Обновлено!");
+			System.out.println(updated);
+		} catch (Exception e) {
+			System.out.println("Ошибка: " + e.getMessage());
+		}
 	}
 
 	private static void delete() {
@@ -104,8 +108,12 @@ public class Main {
 		Long id = Long.parseLong(scanner.nextLine());
 		System.out.print("Удалить? (y/n): ");
 		if (scanner.nextLine().equalsIgnoreCase("y")) {
-			dao.delete(id);
-			System.out.println("Удалено!");
+			try {
+				userService.deleteUser(id);
+				System.out.println("Удалено!");
+			} catch (Exception e) {
+				System.out.println("Ошибка: " + e.getMessage());
+			}
 		}
 	}
 }
