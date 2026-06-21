@@ -10,7 +10,7 @@ public class UserDAO {
 	private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
 	// CREATE
-	public User create(User user) {
+	public UserEntity create(UserEntity user) {
 		Transaction tx = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			tx = session.beginTransaction();
@@ -26,25 +26,25 @@ public class UserDAO {
 	}
 
 	// READ (по id)
-	public User read(Long id) {
+	public UserEntity read(Long id) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			return session.get(User.class, id);
+			return session.get(UserEntity.class, id);
 		}
 	}
 
 	// READ (все)
-	public List<User> readAll() {
+	public List<UserEntity> readAll() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			return session.createQuery("FROM User", User.class).list();
+			return session.createQuery("FROM UserEntity", UserEntity.class).list();
 		}
 	}
 
 	// UPDATE
-	public User update(User user) {
+	public UserEntity update(UserEntity user) {
 		Transaction tx = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			tx = session.beginTransaction();
-			User merged = session.merge(user);
+			UserEntity merged = session.merge(user);
 			tx.commit();
 			log.info("Обновлен пользователь: {}", user.getEmail());
 			return merged;
@@ -60,7 +60,7 @@ public class UserDAO {
 		Transaction tx = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			tx = session.beginTransaction();
-			User user = session.get(User.class, id);
+			UserEntity user = session.get(UserEntity.class, id);
 			if (user != null) {
 				session.remove(user);
 				log.info("Удален пользователь с ID: {}", id);

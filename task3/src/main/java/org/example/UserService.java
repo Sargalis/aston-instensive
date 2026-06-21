@@ -9,7 +9,7 @@ public class UserService {
 		this.userDAO = userDAO;
 	}
 
-	public User createUser(String name, String email, Integer age) {
+	public UserEntity createUser(String name, String email, Integer age) {
 		// Простая валидация
 		if (name == null || name.trim().isEmpty()) {
 			throw new IllegalArgumentException("Имя не может быть пустым");
@@ -21,20 +21,20 @@ public class UserService {
 			throw new IllegalArgumentException("Некорректный возраст");
 		}
 
-		User user = new User(name, email, age);
+		UserEntity user = new UserEntity(name, email, age);
 		return userDAO.create(user);
 	}
 
-	public User getUserById(Long id) {
+	public UserEntity getUserById(Long id) {
 		return userDAO.read(id);
 	}
 
-	public List<User> getAllUsers() {
+	public List<UserEntity> getAllUsers() {
 		return userDAO.readAll();
 	}
 
-	public User updateUser(Long id, String name, String email, Integer age) {
-		User user = userDAO.read(id);
+	public UserEntity updateUser(Long id, String name, String email, Integer age) {
+		UserEntity user = userDAO.read(id);
 		if (user == null) {
 			throw new RuntimeException("Пользователь с ID " + id + " не найден");
 		}

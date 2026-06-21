@@ -46,7 +46,7 @@ public class Main {
 		Integer age = ageStr.isEmpty() ? null : Integer.parseInt(ageStr);
 
 		try {
-			User user = userService.createUser(name, email, age);
+			UserEntity user = userService.createUser(name, email, age);
 			System.out.println("Создан! ID: " + user.getId());
 		} catch (Exception e) {
 			System.out.println("Ошибка: " + e.getMessage());
@@ -56,7 +56,7 @@ public class Main {
 	private static void read() {
 		System.out.print("ID: ");
 		Long id = Long.parseLong(scanner.nextLine());
-		User user = userService.getUserById(id);
+		UserEntity user = userService.getUserById(id);
 		if (user != null) {
 			System.out.println(user);
 		} else {
@@ -65,7 +65,7 @@ public class Main {
 	}
 
 	private static void readAll() {
-		List<User> users = userService.getAllUsers();
+		List<UserEntity> users = userService.getAllUsers();
 		if (users.isEmpty()) {
 			System.out.println("Нет пользователей");
 		} else {
@@ -76,7 +76,7 @@ public class Main {
 	private static void update() {
 		System.out.print("ID для обновления: ");
 		Long id = Long.parseLong(scanner.nextLine());
-		User user = userService.getUserById(id);
+		UserEntity user = userService.getUserById(id);
 		if (user == null) {
 			System.out.println("Пользователь не найден");
 			return;
@@ -95,7 +95,7 @@ public class Main {
 		if (!ageStr.isEmpty()) user.setAge(Integer.parseInt(ageStr));
 
 		try {
-			User updated = userService.updateUser(id, user.getName(), user.getEmail(), user.getAge());
+			UserEntity updated = userService.updateUser(id, user.getName(), user.getEmail(), user.getAge());
 			System.out.println("Обновлено!");
 			System.out.println(updated);
 		} catch (Exception e) {
