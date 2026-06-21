@@ -8,7 +8,7 @@ public class Main {
 	private static final Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		System.out.println("=== User Service (task2) ===");
+		System.out.println("=== User Service ===");
 
 		while (true) {
 			System.out.println("\n1. Создать");
