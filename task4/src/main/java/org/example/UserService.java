@@ -13,25 +13,25 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public User createUser(String name, String email, Integer age) {
-		User user = new User();
+	public UserEntity createUser(String name, String email, Integer age) {
+		UserEntity user = new UserEntity();
 		user.setName(name);
 		user.setEmail(email);
 		user.setAge(age);
 		return userRepository.save(user);
 	}
 
-	public User getUserById(Long id) {
+	public UserEntity getUserById(Long id) {
 		return userRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("User not found"));
 	}
 
-	public List<User> getAllUsers() {
+	public List<UserEntity> getAllUsers() {
 		return userRepository.findAll();
 	}
 
-	public User updateUser(Long id, String name, String email, Integer age) {
-		User user = getUserById(id);
+	public UserEntity updateUser(Long id, String name, String email, Integer age) {
+		UserEntity user = getUserById(id);
 		user.setName(name);
 		user.setEmail(email);
 		user.setAge(age);
