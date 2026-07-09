@@ -15,42 +15,28 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping
-	public ResponseEntity<UserDTO> createUser(@RequestBody UserEntity user) {
-		UserEntity savedUser = userService.createUser(user.getName(), user.getEmail(), user.getAge());
-		return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(savedUser));
+	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO request) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-		return ResponseEntity.ok(toDTO(userService.getUserById(id)));
+		return ResponseEntity.ok(userService.getUserById(id));
 	}
 
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> getAllUsers() {
-		List<UserDTO> dtos = userService.getAllUsers().stream()
-				.map(this::toDTO)
-				.toList();
-		return ResponseEntity.ok(dtos);
+		return ResponseEntity.ok(userService.getAllUsers());
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserEntity user) {
-		UserEntity updatedUser = userService.updateUser(id, user.getName(), user.getEmail(), user.getAge());
-		return ResponseEntity.ok(toDTO(updatedUser));
+	public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO request) {
+		return ResponseEntity.ok(userService.updateUser(id, request));
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	private UserDTO toDTO(UserEntity user) {
-		UserDTO dto = new UserDTO();
-		dto.setId(user.getId());
-		dto.setName(user.getName());
-		dto.setEmail(user.getEmail());
-		dto.setAge(user.getAge());
-		return dto;
 	}
 }
