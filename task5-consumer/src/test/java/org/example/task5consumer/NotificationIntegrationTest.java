@@ -1,5 +1,6 @@
 package org.example.task5consumer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 @SpringBootTest
 @EmbeddedKafka(partitions = 1, topics = {"user-events"})
 class NotificationIntegrationTest {
@@ -50,7 +52,7 @@ class NotificationIntegrationTest {
 			ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(5));
 			assertFalse(records.isEmpty());
 			for (var record : records) {
-				System.out.println("Получено: " + record.value());
+				log.info("Получено: {}", record.value());
 				assertTrue(record.value().contains("test@test.com"));
 				assertTrue(record.value().contains("CREATED"));
 			}
@@ -59,6 +61,6 @@ class NotificationIntegrationTest {
 
 	@Test
 	void testApiSendsEmail() {
-		System.out.println("API тест проходит");
+		log.info("API тест проходит");
 	}
 }

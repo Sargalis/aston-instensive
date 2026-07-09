@@ -1,0 +1,29 @@
+2026-07-09T14:10:30.623+03:00  INFO 29132 --- [main] o.e.t.Task5ProducerApplication           : Starting Task5ProducerApplication using Java 21.0.11 with PID 29132 (D:\My stuff\GitHUB\aston-intensive\task5-producer\target\classes started by Sargalis in D:\My stuff\GitHUB\aston-intensive\task5-producer)
+2026-07-09T14:10:30.623+03:00 DEBUG 29132 --- [main] o.e.t.Task5ProducerApplication           : Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-07-09T14:10:30.624+03:00  INFO 29132 --- [main] o.e.t.Task5ProducerApplication           : No active profile set, falling back to 1 default profile: "default"
+2026-07-09T14:10:30.904+03:00  INFO 29132 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-09T14:10:30.932+03:00  INFO 29132 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 24 ms. Found 1 JPA repository interface.
+2026-07-09T14:10:31.161+03:00  INFO 29132 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-07-09T14:10:31.167+03:00  INFO 29132 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-07-09T14:10:31.167+03:00  INFO 29132 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-07-09T14:10:31.193+03:00  INFO 29132 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-07-09T14:10:31.193+03:00  INFO 29132 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 551 ms
+2026-07-09T14:10:31.265+03:00  INFO 29132 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-07-09T14:10:31.290+03:00  INFO 29132 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-07-09T14:10:31.305+03:00  INFO 29132 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-07-09T14:10:31.435+03:00  INFO 29132 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-09T14:10:31.449+03:00  INFO 29132 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-07-09T14:10:31.531+03:00  INFO 29132 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6c9bf3b5
+2026-07-09T14:10:31.532+03:00  INFO 29132 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-07-09T14:10:31.957+03:00  INFO 29132 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-07-09T14:10:31.980+03:00  INFO 29132 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-09T14:10:32.138+03:00  WARN 29132 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-09T14:10:32.308+03:00  INFO 29132 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2026-07-09T14:10:32.312+03:00  INFO 29132 --- [main] o.e.t.Task5ProducerApplication           : Started Task5ProducerApplication in 1.882 seconds (process running for 2.145)
+2026-07-09T14:10:53.699+03:00  INFO 29132 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-09T14:10:53.700+03:00  INFO 29132 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-07-09T14:10:53.700+03:00  INFO 29132 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-07-09T14:10:53.981+03:00  INFO 29132 --- [http-nio-8080-exec-1] o.e.t.kafka.UserEventProducer            : Новый ивент Kafka: type=CREATED, email=john@test.com
+2026-07-09T14:11:59.741+03:00  INFO 29132 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-09T14:11:59.743+03:00  INFO 29132 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-07-09T14:11:59.745+03:00  INFO 29132 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
