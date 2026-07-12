@@ -16,12 +16,6 @@ public class SwaggerConfig {
 				.info(new Info()
 						.title("User Service API")
 						.version("1.0.0")
-						.description("REST API for user management")
-						.contact(new Contact()
-								.name("User Service Team")
-								.email("support@example.com"))
-						.license(new License()
-								.name("Apache 2.0")
-								.url("http://springdoc.org")));
+						.description("REST API for user management"));
 	}
 }
