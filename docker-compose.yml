@@ -1,31 +1,103 @@
-version: '3.8'
-
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+  discovery-service:
+    image: eclipse-temurin:21-jdk-alpine
+    container_name: discovery-service
+    volumes:
+      - ./task7/discovery-service/target/discovery-service-1.0-SNAPSHOT.jar:/app/app.jar
+    command: java -Xmx256m -Xms128m -jar /app/app.jar
     ports:
-      - "2181:2181"
-
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    container_name: kafka
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
+      - "8761:8761"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - task7-network
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  config-server:
+    image: eclipse-temurin:21-jdk-alpine
+    container_name: config-server
+    volumes:
+      - ./task7/config-server/target/config-server-1.0-SNAPSHOT.jar:/app/app.jar
+    command: java -Xmx256m -Xms128m -jar /app/app.jar
+    ports:
+      - "8888:8888"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - task7-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: samarin4571730
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - task7-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d user_db"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  user-service:
+    image: eclipse-temurin:21-jdk-alpine
+    container_name: user-service
+    volumes:
+      - ./task7/user-service/target/user-service-1.0-SNAPSHOT.jar:/app/app.jar
+    command: java -Xmx256m -Xms128m -jar /app/app.jar
+    ports:
+      - "8081:8081"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - task7-network
+    restart: unless-stopped
+
+  gateway-service:
+    image: eclipse-temurin:21-jdk-alpine
+    container_name: gateway-service
+    volumes:
+      - ./task7/gateway-service/target/gateway-service-1.0-SNAPSHOT.jar:/app/app.jar
+    command: java -Xmx256m -Xms128m -jar /app/app.jar
+    ports:
+      - "8080:8080"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+      user-service:
+        condition: service_started
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - task7-network
+    restart: unless-stopped
+
+networks:
+  task7-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
