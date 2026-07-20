@@ -8,11 +8,10 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
-          lower-case-service-id: true
+          enabled: false
       routes:
-        - id: user-service
-          uri: lb://USER-SERVICE
+        - id: user-service-api
+          uri: http://user-service:8081
           predicates:
             - Path=/api/users/**
           filters:
@@ -21,10 +20,14 @@ spring:
                 name: userServiceBreaker
                 fallbackUri: forward:/fallback/users
             - AddRequestHeader=X-Gateway-Header, gateway
-        - id: swagger
-          uri: lb://USER-SERVICE
+
+        # SWAGGER
+        - id: swagger-all
+          uri: http://user-service:8081
           predicates:
-            - Path=/swagger-ui/**, /api-docs/**
+            - Path=/swagger-ui/**, /swagger-ui.html, /swagger-resources/**, /v3/api-docs/**, /v3/api-docs
+          filters:
+            - RewritePath=/v3/api-docs, /v3/api-docs
 
 eureka:
   client:
@@ -32,9 +35,6 @@ eureka:
       defaultZone: http://discovery-service:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
-    registry-fetch-interval-seconds: 5
-  instance:
-    prefer-ip-address: true
 
 resilience4j:
   circuitbreaker:
@@ -45,12 +45,6 @@ resilience4j:
         minimum-number-of-calls: 5
         failure-rate-threshold: 50
         wait-duration-in-open-state: 5s
-
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.cloud.client.discovery: DEBUG
-    com.netflix.discovery: DEBUG
 
 management:
   endpoints:
